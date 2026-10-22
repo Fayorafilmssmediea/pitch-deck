@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- user-scalable=yes se mobile par pinch karke zoom karna perfectly chalega -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=4.0, user-scalable=yes">
+  <!-- user-scalable=yes se pinch karke zoom smooth chalega -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   <title>Fayora Films & Media | Pitch Deck</title>
 
   <style>
@@ -16,100 +16,45 @@
     html, body {
       width: 100%;
       height: 100%;
-      background-color: #000000;
+      background-color: #0b0c10;
+      overflow: hidden;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      overflow-x: hidden;
-      overflow-y: auto;
     }
 
-    /* Screen Center Wrapper */
-    .screen-wrapper {
-      position: fixed;
+    /* Full-Screen Container */
+    .container {
+      position: absolute;
       top: 0;
       left: 0;
       width: 100vw;
+      height: 100vh;
       height: 100dvh;
       display: flex;
       justify-content: center;
       align-items: center;
       background: #000000;
-      overflow: hidden;
     }
 
-    /* Frame container jo Canva ke bottom bar ko crop kar deta hai */
-    .deck-crop-box {
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #000000;
-    }
-
-    /* Canva Iframe */
-    .deck-crop-box iframe {
+    /* Responsive Iframe without breaking styles */
+    iframe {
       width: 100%;
+      height: 100%;
       border: none;
       outline: none;
       display: block;
-    }
-
-    /* 1. HORIZONTAL / LANDSCAPE (Phone ghumaane par) */
-    @media (orientation: landscape) {
-      .deck-crop-box {
-        width: 100vw;
-        height: 100dvh;
-        max-width: calc(100dvh * (16 / 9));
-      }
-      /* Height badha kar bottom Canva watermark/bar ko screen ke niche push karta hai */
-      .deck-crop-box iframe {
-        height: calc(100% + 56px);
-        margin-bottom: -56px;
-      }
-      .mobile-rotate-tip {
-        display: none !important;
-      }
-    }
-
-    /* 2. VERTICAL / PORTRAIT (Phone seedha pakda ho) */
-    @media (orientation: portrait) {
-      .deck-crop-box {
-        width: 100vw;
-        height: calc(100vw * (9 / 16));
-        transform: scale(1.18);
-        transform-origin: center center;
-      }
-      .deck-crop-box iframe {
-        height: calc(100% + 48px);
-        margin-bottom: -48px;
-      }
-      .mobile-rotate-tip {
-        position: fixed;
-        bottom: 24px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(18, 20, 26, 0.92);
-        color: #ffffff;
-        padding: 9px 18px;
-        border-radius: 30px;
-        font-size: 12px;
-        font-weight: 500;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.7);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(8px);
-        z-index: 9999;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
     }
   </style>
 </head>
 <body>
 
-  <div class="screen-wrapper">
-    <div class="deck-crop-box">
-      <iframe 
-        loading="lazy"
-        src="
+  <div class="container">
+    <iframe 
+      src="https://www.canva.com/design/DAHWehnp36A/a2pay3pyC0-FucYp-aZoug/view?embed" 
+      allowfullscreen="allowfullscreen" 
+      allow="autoplay; fullscreen"
+      loading="eager">
+    </iframe>
+  </div>
+
+</body>
+</html>
