@@ -21,23 +21,22 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-    /* Screen Wrapper with Mobile Safe Areas */
     .wrapper {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
-      height: 100dvh; /* Dynamic viewport height to prevent browser bar cutoffs */
+      height: 100dvh;
       display: flex;
       justify-content: center;
       align-items: center;
       background: #000000;
-      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
 
-    /* Presentation Screen Container */
-    .deck-container {
+    /* Container jo Canva ke bottom bar ko screen ke bahar push karke clip kar deta hai */
+    .deck-frame-mask {
       position: relative;
+      overflow: hidden;
       width: 100%;
       height: 100%;
       display: flex;
@@ -47,35 +46,43 @@
 
     iframe {
       width: 100%;
-      height: 100%;
+      /* Height thodi zyada badha kar bottom bar ko crop kar dete hain */
+      height: calc(100% + 56px);
+      margin-bottom: -56px;
       border: none;
       outline: none;
       display: block;
     }
 
-    /* 1. HORIZONTAL / LANDSCAPE (Jab phone ghuma ho) - No Cutoff Fix */
+    /* Landscape Mode (Horizontal) */
     @media (orientation: landscape) {
-      .deck-container {
-        /* Screen ki height ke hisaab se 16:9 box fit karega taaki bottom text kabhi na kate */
+      .deck-frame-mask {
         height: 100%;
         max-height: 100dvh;
         width: auto;
         aspect-ratio: 16 / 9;
+      }
+      iframe {
+        height: calc(100% + 48px);
+        margin-bottom: -48px;
       }
       .rotate-badge {
         display: none !important;
       }
     }
 
-    /* 2. VERTICAL / PORTRAIT (Phone seedha pakda ho) */
+    /* Portrait Mode (Vertical) */
     @media (orientation: portrait) {
-      .deck-container {
+      .deck-frame-mask {
         width: 100%;
         height: auto;
         aspect-ratio: 16 / 9;
-        /* Mobile portrait me pitchdeck scale taaki text readable ho */
         transform: scale(1.28);
         transform-origin: center center;
+      }
+      iframe {
+        height: calc(100% + 52px);
+        margin-bottom: -52px;
       }
 
       .rotate-badge {
@@ -97,12 +104,6 @@
         backdrop-filter: blur(10px);
         z-index: 9999;
         cursor: pointer;
-        animation: pulseBadge 2.2s infinite ease-in-out;
-      }
-
-      @keyframes pulseBadge {
-        0%, 100% { transform: translateX(-50%) scale(1); }
-        50% { transform: translateX(-50%) scale(1.04); }
       }
     }
   </style>
@@ -110,18 +111,17 @@
 <body>
 
   <div class="wrapper">
-    <div class="deck-container">
+    <div class="deck-frame-mask">
       <iframe 
         loading="lazy"
         src="https://www.canva.com/design/DAHWehnp36A/a2pay3pyC0-FucYp-aZoug/view?embed" 
         allowfullscreen="allowfullscreen" 
-        allow="autoplay; fullscreen; accelerometer; gyroscope">
+        allow="autoplay; fullscreen">
       </iframe>
     </div>
 
-    <!-- Portrait view guide badge -->
     <div class="rotate-badge" onclick="this.style.display='none'">
-      <span>🔄</span> <strong>Rotate phone for Fullscreen</strong>
+      <span>🔄</span> <strong>Rotate for Fullscreen</strong>
     </div>
   </div>
 
