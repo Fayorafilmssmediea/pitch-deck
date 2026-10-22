@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=3.0, user-scalable=yes, viewport-fit=cover">
   <title>Fayora Films & Media | Pitch Deck</title>
 
   <style>
@@ -10,45 +10,42 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
     }
     
     html, body {
       width: 100%;
       height: 100%;
-      overflow: hidden;
       background-color: #000000;
+      overflow-x: hidden;
+      overflow-y: auto;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-    .wrapper {
-      position: fixed;
-      top: 0;
-      left: 0;
+    /* Screen Wrapper */
+    .viewport-box {
       width: 100vw;
       height: 100dvh;
       display: flex;
       justify-content: center;
       align-items: center;
       background: #000000;
+      overflow: hidden;
+      position: relative;
     }
 
-    /* Container jo Canva ke bottom bar ko screen ke bahar push karke clip kar deta hai */
-    .deck-frame-mask {
+    /* Deck Frame Clip (Canva ke bottom watermark aur control bar ko cut karta hai) */
+    .deck-frame {
       position: relative;
-      overflow: hidden;
       width: 100%;
       height: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
+      overflow: hidden;
     }
 
     iframe {
       width: 100%;
-      /* Height thodi zyada badha kar bottom bar ko crop kar dete hain */
-      height: calc(100% + 56px);
-      margin-bottom: -56px;
       border: none;
       outline: none;
       display: block;
@@ -56,72 +53,43 @@
 
     /* Landscape Mode (Horizontal) */
     @media (orientation: landscape) {
-      .deck-frame-mask {
-        height: 100%;
-        max-height: 100dvh;
-        width: auto;
-        aspect-ratio: 16 / 9;
+      .deck-frame {
+        width: 100vw;
+        height: 100dvh;
+        max-width: calc(100dvh * (16 / 9));
       }
       iframe {
-        height: calc(100% + 48px);
-        margin-bottom: -48px;
-      }
-      .rotate-badge {
-        display: none !important;
+        /* Height badha kar bottom watermark aur controls ko frame ke bahar push karta hai */
+        height: calc(100% + 64px);
+        margin-bottom: -64px;
       }
     }
 
     /* Portrait Mode (Vertical) */
     @media (orientation: portrait) {
-      .deck-frame-mask {
-        width: 100%;
-        height: auto;
-        aspect-ratio: 16 / 9;
-        transform: scale(1.28);
+      .deck-frame {
+        width: 100vw;
+        height: calc(100vw * (9 / 16));
+        transform: scale(1.15);
         transform-origin: center center;
       }
       iframe {
-        height: calc(100% + 52px);
-        margin-bottom: -52px;
-      }
-
-      .rotate-badge {
-        position: fixed;
-        bottom: calc(20px + env(safe-area-inset-bottom));
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(20, 20, 24, 0.94);
-        color: #ffffff;
-        padding: 9px 18px;
-        border-radius: 30px;
-        font-size: 12px;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.7);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        z-index: 9999;
-        cursor: pointer;
+        height: calc(100% + 55px);
+        margin-bottom: -55px;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="wrapper">
-    <div class="deck-frame-mask">
+  <div class="viewport-box">
+    <div class="deck-frame">
       <iframe 
         loading="lazy"
         src="https://www.canva.com/design/DAHWehnp36A/a2pay3pyC0-FucYp-aZoug/view?embed" 
         allowfullscreen="allowfullscreen" 
         allow="autoplay; fullscreen">
       </iframe>
-    </div>
-
-    <div class="rotate-badge" onclick="this.style.display='none'">
-      <span>🔄</span> <strong>Rotate for Fullscreen</strong>
     </div>
   </div>
 
