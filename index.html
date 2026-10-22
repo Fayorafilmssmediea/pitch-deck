@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- user-scalable=yes se pinch karke zoom smooth chalega -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-  <title>Fayora Films & Media | Pitch Deck</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Fayora Media | Pitch Deck & Portfolio</title>
 
   <style>
     * {
@@ -12,47 +11,41 @@
       padding: 0;
       box-sizing: border-box;
     }
-
     html, body {
       width: 100%;
       height: 100%;
-      background-color: #0b0c10;
       overflow: hidden;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #0b0c10;
     }
-
-    /* Full-Screen Container */
-    .container {
+    .portfolio-container {
       position: absolute;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      height: 100dvh;
+      border: none;
       display: flex;
       justify-content: center;
       align-items: center;
       background: #000000;
     }
-
-    /* Responsive Iframe without breaking styles */
-    iframe {
+    .portfolio-iframe {
       width: 100%;
       height: 100%;
       border: none;
       outline: none;
-      display: block;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
+  <div class="portfolio-container">
     <iframe 
+      class="portfolio-iframe"
+      loading="lazy"
       src="https://www.canva.com/design/DAHWehnp36A/a2pay3pyC0-FucYp-aZoug/view?embed" 
       allowfullscreen="allowfullscreen" 
-      allow="autoplay; fullscreen"
-      loading="eager">
+      allow="autoplay; fullscreen">
     </iframe>
   </div>
 
