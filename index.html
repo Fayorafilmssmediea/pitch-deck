@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
   <title>Fayora Media | Pitch Deck & Portfolio</title>
 
   <style>
@@ -10,44 +10,125 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
     html, body {
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background-color: #0b0c10;
+      background-color: #000000;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
-    .portfolio-container {
-      position: absolute;
+
+    /* Screen Wrapper */
+    .portfolio-wrapper {
+      position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
-      height: 100vh;
-      border: none;
+      height: 100dvh; /* Dynamic viewport height to prevent browser bar cutoffs */
       display: flex;
       justify-content: center;
       align-items: center;
       background: #000000;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
+
+    /* Presentation Screen Box (16:9 safe frame) */
+    .deck-frame {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      max-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Landscape (Horizontal) Fit: Screen height ke andar 16:9 ratio maintain karta hai */
+    @media (orientation: landscape) {
+      .deck-frame {
+        width: auto;
+        height: 100%;
+        aspect-ratio: 16 / 9;
+        max-width: 100vw;
+      }
+    }
+
+    /* Portrait (Vertical) */
+    @media (orientation: portrait) {
+      .deck-frame {
+        width: 100vw;
+        height: auto;
+        aspect-ratio: 16 / 9;
+      }
+    }
+
     .portfolio-iframe {
       width: 100%;
       height: 100%;
       border: none;
       outline: none;
+      display: block;
+    }
+
+    /* Floating Fullscreen / Expand Button */
+    .fullscreen-btn {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      z-index: 9999;
+      background: rgba(18, 20, 26, 0.85);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 20px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .fullscreen-btn:active {
+      transform: scale(0.94);
+      background: rgba(30, 35, 45, 0.95);
     }
   </style>
 </head>
-<body>
+<body id="pageBody">
 
-  <div class="portfolio-container">
-    <iframe 
-      class="portfolio-iframe"
-      loading="lazy"
-      src="https://www.canva.com/design/DAHWehnp36A/a2pay3pyC0-FucYp-aZoug/view?embed" 
-      allowfullscreen="allowfullscreen" 
-      allow="autoplay; fullscreen">
-    </iframe>
+  <div class="portfolio-wrapper" id="deckContainer">
+    <!-- Floating Expand / Fullscreen Button -->
+    <button class="fullscreen-btn" id="fsToggleBtn" onclick="toggleFullscreen()">
+      <span id="fsIcon">⛶</span>
+      <span id="fsText">Expand</span>
+    </button>
+
+    <div class="deck-frame">
+      <iframe 
+        class="portfolio-iframe"
+        loading="eager"
+        src="https://www.canva.com/design/DAHWehnp36A/a2pay3pyC0-FucYp-aZoug/view?embed" 
+        allowfullscreen="allowfullscreen" 
+        allow="autoplay; fullscreen; accelerometer; gyroscope">
+      </iframe>
+    </div>
   </div>
 
-</body>
-</html>
+  <script>
+    function toggleFullscreen() {
+      const container = document.documentElement;
+      const fsText = document.getElementById('fsText');
+      const fsIcon = document.getElementById('fsIcon');
+
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        // Request Fullscreen
+        if (container.requestFullscreen) {
+          container.requestFullscreen();
