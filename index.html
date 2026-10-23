@@ -1,53 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Fayora Media | Pitch Deck & Portfolio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Fayora Films & Media | Pitch Deck</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background-color: #0b0c10;
-    }
-    .portfolio-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      border: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #000000;
-    }
-    .portfolio-iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      outline: none;
-    }
-  </style>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #000000;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    /* Screen Wrapper with Mobile Safe Areas */
+    .wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100dvh; /* Dynamic viewport height to prevent browser bar cutoffs */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000000;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+
+    /* Presentation Screen Container */
+    .deck-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      display: block;
+    }
+
+    /* 1. HORIZONTAL / LANDSCAPE (Jab phone ghuma ho) - No Cutoff Fix */
+    @media (orientation: landscape) {
+      .deck-container {
+        /* Screen ki height ke hisaab se 16:9 box fit karega taaki bottom text kabhi na kate */
+        height: 100%;
+        max-height: 100dvh;
+        width: auto;
+        aspect-ratio: 16 / 9;
+      }
+      .rotate-badge {
+        display: none !important;
+      }
+    }
+
+    /* 2. VERTICAL / PORTRAIT (Phone seedha pakda ho) */
+    @media (orientation: portrait) {
+      .deck-container {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        /* Mobile portrait me pitchdeck scale taaki text readable ho */
+        transform: scale(1.28);
+        transform-origin: center center;
+      }
+
+      .rotate-badge {
+        position: fixed;
+        bottom: calc(20px + env(safe-area-inset-bottom));
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(20, 20, 24, 0.94);
+        color: #ffffff;
+        padding: 9px 18px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        z-index: 9999;
+        cursor: pointer;
+        animation: pulseBadge 2.2s infinite ease-in-out;
+      }
+
+      @keyframes pulseBadge {
+        0%, 100% { transform: translateX(-50%) scale(1); }
+        50% { transform: translateX(-50%) scale(1.04); }
+      }
+    }
+  </style>
 </head>
 <body>
 
-  <div class="portfolio-container">
-    <iframe 
-      class="portfolio-iframe"
-      loading="lazy"
-      src="https://www.canva.com/design/DAHWehnp36A/a2pay3pyC0-FucYp-aZoug/view?embed" 
-      allowfullscreen="allowfullscreen" 
-      allow="autoplay; fullscreen">
-    </iframe>
-  </div>
+  <div class="wrapper">
+    <div class="deck-container">
+      <iframe 
+        loading="lazy"
+        src="https://www.canva.com/design/DAHWehnp36A/a2pay3pyC0-FucYp-aZoug/view?embed" 
+        allowfullscreen="allowfullscreen" 
+        allow="autoplay; fullscreen; accelerometer; gyroscope">
+      </iframe>
+    </div>
+
+    <!-- Portrait view guide badge -->
+    <div class="rotate-badge" onclick="this.style.display='none'">
+      <span>🔄</span> <strong>Rotate phone for Fullscreen</strong>
+    </div>
+  </div>
 
 </body>
 </html>
