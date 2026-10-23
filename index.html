@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-  <title>Fayora Media | Pitch Deck</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+  <title>Fayora Films & Media | Pitch Deck</title>
 
   <style>
     * {
@@ -12,7 +12,7 @@
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
     }
-    
+
     html, body {
       width: 100%;
       height: 100%;
@@ -21,8 +21,8 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-    /* Screen Wrapper: Prevents browser address bar shifting */
-    .screen-wrapper {
+    /* Screen Wrapper with Dynamic Viewport Height & Mobile Safe Area */
+    .portfolio-wrapper {
       position: fixed;
       top: 0;
       left: 0;
@@ -32,96 +32,166 @@
       justify-content: center;
       align-items: center;
       background: #000000;
-      overflow: hidden;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
 
-    /* Deck Frame Clip: Crops Canva's bottom controls and watermark */
-    .deck-crop-box {
+    /* Presentation Screen Box (16:9 safe frame) */
+    .deck-frame {
       position: relative;
-      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      max-height: 100dvh;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #000000;
     }
 
-    .deck-crop-box iframe {
-      width: 100%;
-      border: none;
-      outline: none;
-      display: block;
-    }
-
-    /* 1. LANDSCAPE (Horizontal - When Phone is Rotated or on PC) */
+    /* Landscape (Horizontal) Fit: Screen height ke andar 16:9 ratio maintain karta hai taaki bottom text na kate */
     @media (orientation: landscape) {
-      .deck-crop-box {
-        width: 100vw;
-        height: 100dvh;
-        max-width: calc(100dvh * (16 / 9));
+      .deck-frame {
+        width: auto;
+        height: 100%;
+        aspect-ratio: 16 / 9;
+        max-width: 100vw;
       }
-      /* Extra height clips Canva's bottom UI bar outside the container */
-      .deck-crop-box iframe {
-        height: calc(100% + 56px);
-        margin-bottom: -56px;
-      }
-      .mobile-rotate-tip {
+      .rotate-badge {
         display: none !important;
       }
     }
 
-    /* 2. PORTRAIT (Vertical - Normal Mobile View) */
+    /* Portrait (Vertical) */
     @media (orientation: portrait) {
-      .deck-crop-box {
+      .deck-frame {
         width: 100vw;
-        height: calc(100vw * (9 / 16));
-        transform: scale(1.18);
-        transform-origin: center center;
+        height: auto;
+        aspect-ratio: 16 / 9;
       }
-      .deck-crop-box iframe {
-        height: calc(100% + 50px);
-        margin-bottom: -50px;
-      }
-      .mobile-rotate-tip {
+
+      .rotate-badge {
         position: fixed;
-        bottom: 24px;
+        bottom: calc(20px + env(safe-area-inset-bottom));
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(18, 20, 26, 0.92);
+        background: rgba(20, 20, 24, 0.94);
         color: #ffffff;
         padding: 9px 18px;
         border-radius: 30px;
         font-size: 12px;
         font-weight: 500;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.7);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(8px);
-        z-index: 9999;
-        cursor: pointer;
         display: flex;
         align-items: center;
         gap: 8px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        z-index: 9998;
+        cursor: pointer;
+        animation: pulseBadge 2.2s infinite ease-in-out;
       }
+
+      @keyframes pulseBadge {
+        0%, 100% { transform: translateX(-50%) scale(1); }
+        50% { transform: translateX(-50%) scale(1.04); }
+      }
+    }
+
+    .portfolio-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      display: block;
+    }
+
+    /* Floating Fullscreen Button */
+    .fullscreen-btn {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      z-index: 9999;
+      background: rgba(18, 20, 26, 0.85);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 20px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .fullscreen-btn:active {
+      transform: scale(0.94);
+      background: rgba(30, 35, 45, 0.95);
     }
   </style>
 </head>
-<body>
+<body id="pageBody">
 
-  <div class="screen-wrapper">
-    <div class="deck-crop-box">
-      <!-- Clean embed without bottom Canva attribution markup -->
+  <div class="portfolio-wrapper" id="deckContainer">
+    <!-- Fullscreen Expand Button -->
+    <button class="fullscreen-btn" id="fsToggleBtn" onclick="toggleFullscreen()">
+      <span id="fsIcon">⛶</span>
+      <span id="fsText">Expand</span>
+    </button>
+
+    <div class="deck-frame">
       <iframe 
-        loading="lazy"
+        class="portfolio-iframe"
+        loading="eager"
         src="https://www.canva.com/design/DAHWehnp36A/a2pay3pyC0-FucYp-aZoug/view?embed" 
         allowfullscreen="allowfullscreen" 
-        allow="autoplay; fullscreen">
+        allow="autoplay; fullscreen; accelerometer; gyroscope">
       </iframe>
     </div>
 
-    <!-- Rotated view guide for mobile clients -->
-    <div class="mobile-rotate-tip" onclick="this.style.display='none'">
-      <span>🔄</span> <strong>Rotate for Fullscreen view</strong>
+    <!-- Portrait view rotate guide badge -->
+    <div class="rotate-badge" onclick="this.style.display='none'">
+      <span>🔄</span> <strong>Rotate phone for Fullscreen</strong>
     </div>
   </div>
+
+  <script>
+    function toggleFullscreen() {
+      const docEl = document.documentElement;
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (docEl.requestFullscreen) {
+          docEl.requestFullscreen();
+        } else if (docEl.webkitRequestFullscreen) {
+          docEl.webkitRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
+      }
+    }
+
+    function updateFsBtn() {
+      const isFs = document.fullscreenElement || document.webkitFullscreenElement;
+      const fsText = document.getElementById('fsText');
+      const fsIcon = document.getElementById('fsIcon');
+      if (isFs) {
+        fsText.innerText = "Exit";
+        fsIcon.innerText = "✕";
+      } else {
+        fsText.innerText = "Expand";
+        fsIcon.innerText = "⛶";
+      }
+    }
+
+    document.addEventListener("fullscreenchange", updateFsBtn);
+    document.addEventListener("webkitfullscreenchange", updateFsBtn);
+  </script>
 
 </body>
 </html>
